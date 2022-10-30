@@ -1,0 +1,380 @@
+<!--brain mets risk after primary -->
+
+<!-- start html doc -->
+<!DOCTYPE html>
+<html>
+<head lang = "en">
+	<link rel = "stylesheet" type = "text/css" href = "style.css">
+	<meta charset = "UTF-8">
+	<meta name = "apple-mobile-web-app-capable" content = "yes">
+	<meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+	<title> Calculate </title>
+
+	<script>
+	// for brain mets risk prediction
+	// helper function, fix probability interval, bound at 100 bc we display percents
+	// returns x as a number, not as a string
+
+	function probInt(x) {
+		if (x < 0){
+			x = Math.max(0, x);
+		}
+		if(x > 100){
+			x = Math.min(100,x);
+		}
+		return x;
+	}
+
+	// calculation for risk prediction
+
+	function calc(){
+
+		// first obtain age value, if missing report
+
+		var age_val = parseFloat(document.getElementById("age_input").value);
+
+		if (isNaN(age_val)) {
+				document.getElementById('display').innerHTML = "Age input is missing.";
+			} else {
+
+			// define PT
+			// map age onto points
+
+			var PT; 
+
+			if (age_val <= 0) {
+				var PT = 32.6
+			} else if (age_val >= 90){
+				var PT =  0
+			} else {
+				var PT = 32.6 - .036*age_val
+			}
+
+			// check male vs female
+			// isMale is t/f var, T if male
+			var isMale = document.querySelector('input[name="sex"]:checked').value === "male";
+
+			// get race as string
+			var race = document.querySelector('input[name="race"]:checked').value;
+
+			// get tumor grade
+			var grade = document.querySelector('input[name="grade"]:checked').value;
+
+			// get t stage
+			var tstage = document.querySelector('input[name="tstage"]:checked').value;
+
+			// get n stage
+			var nstage = document.querySelector('input[name="nstage"]:checked').value;
+
+			// get bone mets
+			var bonemet = document.querySelector('input[name="bonemet"]:checked').value;
+
+			// get lung mets
+			var lungmet = document.querySelector('input[name="lungmet"]:checked').value;
+
+			// get liver mets
+			var livmet = document.querySelector('input[name="livmet"]:checked').value;
+
+			// get sarc status
+			var sarc = document.querySelector('input[name="sarc"]:checked').value;
+
+			// get Fuhrman nuclear grade
+			var fuhr = document.querySelector('input[name="fuhr"]:checked').value;
+
+			// get histology
+			var hist = document.querySelector('input[name="hist"]:checked').value;
+
+
+			// update PT
+
+			PT = PT + (4.1*isMale) + 22.3*(race === "4") + 18.3*(race === "3") + 15.6*(race === "2") + 4.7*(grade === "2") + 15.5*(grade === "3") + 11.3*(grade === "4") + 24.2*(grade === "5") + 40.8*(tstage === "2") + 27.4*(tstage === "3") + 30.0*(tstage === "4") + 31.7*(tstage === "0") + 19.6* (tstage === "5") + 27.6*(nstage === "1") + 36.7*(nstage === "2") + 25.0*(nstage === "3") + 40.4*(nstage === "5") + 55.3*(bonemet === "3") + 28.1*(bonemet === "1") + 83.0*(lungmet === "1") + 100.0*(lungmet === "3") + 6.8*(livmet === "1") + 39.0*(livmet === "3") + 14.7*(sarc === "1") + 27.7*(sarc === "3") + 7.2*(fuhr === "1") + 12.1*(fuhr === "3") + 20.8*(fuhr === "4") + 25.5*(fuhr === "5") + 4.1*(hist === "1") + 41.3*(hist === "2");
+
+			// map points onto brain mets risk
+
+			var outcome = Math.round((-1.3447615+0.0051797*PT)*100);
+
+			// format, display results bound between 0 and 1
+			document.getElementById('display_outcome').innerHTML = probInt(outcome) +'%'
+			}
+		}
+
+	</script>
+
+</head>
+
+
+<body>
+
+<h1 class = "main-title" align = "center"> Brain Metastasis Risk </h1>
+
+<div align = "center">
+	<ul id = "nav">
+		<li><a href = "breast.html"> Breast </a></li>
+		<li><a href = "colon.html"> Colon </a></li>
+		<li><a href = "melanoma.html"> Melanoma </a></li>
+		<li><a href = "nsclc.html"> Lung (non-small cell) </a></li>
+		<li><a href = "sclc.html"> Lung (small cell) </a></li>
+		<li><a href = "rcc.html" class = "active-page"> RCC </a></li>
+		<li><a href = "about.html"> About </a></li>
+	<ul>
+</div>
+
+<!-- begin calculator -->
+<!-- set background -->
+
+<div style="background-color: #e8f5feff; border-radius: 15px; width: 370px; margin: 0 auto">
+
+	<!-- build form -->
+	<div style="width: 360px; margin 0 auto">
+		<form style = "padding-left: 10px; font-size: 16px" method = "post">
+			<br>
+
+			<h4> Renal Cell Carcinoma </h4> <br> <br>
+
+			<h4> Age <span style="font-size: 12px"> (years) </span>: </h4>
+
+			<input type="number" name = "age" id = "age_input" style="font-size: 14px" min = "0" value = "50">
+
+			<br></br>
+
+			<div class = "radio-toolbar">
+
+				<h4> Sex </h4>
+
+				<input type = "radio" id = "sexMale" name = "sex" value = "male" checked>  
+				<label for = "sexMale" style="margin-left: 10px"> Male </label>
+
+				<input type = "radio" id = "sexFemale" name = "sex" value = "female">
+				<label for = "sexFemale"> Female </label>
+			</div>
+
+			<br>
+
+			<h4> Race </h4>
+
+			<div class = "radio-toolbar" style="text-align: center; padding-top: 5px; padding-bottom: 15px">
+
+				<input type = "radio" id = "r1" name = "race" value = 1 checked>
+				<label for = "r1"> Black </label>
+
+				<input type = "radio" id = "r2" name = "race" value = 2>
+				<label for = "r2"> White </label>
+
+				<input type = "radio" id = "r3" name = "race" value = 3>
+				<label for = "r3"> Other </label>
+
+				<input type = "radio" id = "r4" name = "race" value = 4>
+				<label for = "r4"> Unknown </label>
+
+			</div>
+
+			<h4> Tumor Grade </h4>
+
+			<div class = "radio-toolbar" style="text-align: center; padding-top: 5px; padding-bottom: 15px">
+
+				<input type = "radio" id = "grade1" name = "grade" value = 1 checked>
+				<label for = "grade1" style="margin-left: 10px"> 1 </label>
+
+				<input type = "radio" id = "grade2" name = "grade" value = 2>
+				<label for = "grade2"> 2 </label>
+
+				<input type = "radio" id = "grade3" name = "grade" value = 3>
+				<label for = "grade3"> 3 </label>
+
+				<input type = "radio" id = "grade4" name = "grade" value = 4>
+				<label for = "grade4"> 4 </label>
+
+				<input type = "radio" id = "grade5" name = "grade" value = 5>
+				<label for = "grade5"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Clinical T Stage </h4>
+
+			<div class = "radio-toolbar" style="text-align: center; padding-top: 5px; padding-bottom: 15px">
+
+				<input type = "radio" id = "t0" name = "tstage" value = 0 checked>
+				<label for = "t0" style="margin-left: 10px"> 0 </label>
+
+				<input type = "radio" id = "t1" name = "tstage" value = 1>
+				<label for = "t1"> 1 </label>
+
+				<input type = "radio" id = "t2" name = "tstage" value = 2>
+				<label for = "t2"> 2 </label>
+
+				<input type = "radio" id = "t3" name = "tstage" value = 3>
+				<label for = "t3"> 3 </label>
+
+				<input type = "radio" id = "t4" name = "tstage" value = 4>
+				<label for = "t4"> 4 </label>
+
+				<input type = "radio" id = "t5" name = "grade" value = 5>
+				<label for = "t5"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Clinical N Stage </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom: 15px">
+
+
+				<input type = "radio" id = "n1" name = "nstage" value = 1 checked>
+				<label for = "n1" style="margin-left: 10px"> 0 </label>
+
+				<input type = "radio" id = "n2" name = "nstage" value = 2>
+				<label for = "n2"> 1 </label>
+
+				<input type = "radio" id = "n3" name = "nstage" value = 3>
+				<label for = "n3"> 2 </label>
+
+				<input type = "radio" id = "n4" name = "nstage" value = 4>
+				<label for = "n4"> 3 </label>
+
+				<input type = "radio" id = "n5" name = "nstage" value = 5>
+				<label for = "n5"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Bone Metastasis </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom: 15px">
+
+
+				<input type = "radio" id = "boney" name = "bonemet" value = 1>
+				<label for = "boney" style = "margin-left: 10px"> Yes </label>
+
+				<input type = "radio" id = "bonen" name = "bonemet" value = 2 checked>
+				<label for = "bonen"> No </label>
+
+				<input type = "radio" id = "boneo" name = "bonemet" value = 3>
+				<label for = "boneo"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Lung Metastasis </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
+
+
+				<input type = "radio" id = "lungy" name = "lungmet" value = 1>
+				<label for = "lungy" style = "margin-left: 10px"> Yes </label>
+
+				<input type = "radio" id = "lungn" name = "lungmet" value = 2 checked>
+				<label for = "lungn"> No </label>
+
+				<input type = "radio" id = "lungo" name = "lungmet" value = 3>
+				<label for = "lungo"> Other/Unknown </label>
+
+			</div>
+
+
+			<h4> Liver Metastasis </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
+
+
+				<input type = "radio" id = "livy" name = "livmet" value = 1>
+				<label for = "livy" style = "margin-left: 10px"> Yes </label>
+
+				<input type = "radio" id = "livn" name = "livmet" value = 2 checked>
+				<label for = "livn"> No </label>
+
+				<input type = "radio" id = "livo" name = "livmet" value = 3>
+				<label for = "livo"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Sarcomatoid Features  </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
+
+
+				<input type = "radio" id = "sarcy" name = "sarc" value = 1>
+				<label for = "sarcy" style = "margin-left: 10px"> Yes </label>
+
+				<input type = "radio" id = "sarcn" name = "sarc" value = 2 checked>
+				<label for = "sarcn"> No </label>
+
+				<input type = "radio" id = "sarco" name = "sarc" value = 3>
+				<label for = "sarco"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Fuhrman Nuclear Grade  </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
+
+
+				<input type = "radio" id = "fuhr1" name = "fuhr" value = 1 checked>
+				<label for = "fuhr1" style = "margin-left: 10px"> 1 </label>
+
+				<input type = "radio" id = "fuhr2" name = "fuhr" value = 2>
+				<label for = "fuhr2"> 2 </label>
+
+				<input type = "radio" id = "fuhr3" name = "fuhr" value = 3>
+				<label for = "fuhr3"> 3 </label>
+
+				<input type = "radio" id = "fuhr4" name = "fuhr" value = 4>
+				<label for = "fuhr4"> 4 </label>
+
+				<input type = "radio" id = "fuhr5" name = "fuhr" value = 5>
+				<label for = "fuhr5"> Other/Unknown </label>
+
+			</div>
+
+			<h4> Tumor histology  </h4>
+
+			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
+
+
+				<input type = "radio" id = "hist1" name = "hist" value = 1 checked>
+				<label for = "hist1" style = "margin-left: 10px"> Type 1 </label>
+
+				<input type = "radio" id = "hist2" name = "hist" value = 2>
+				<label for = "hist2"> Type 2 </label>
+
+				<input type = "radio" id = "hist3" name = "hist" value = 3>
+				<label for = "hist3"> Type 3 </label>
+
+			</div>
+
+			<p>Type 1 includes adenocarcinoma and papillary adenocarcinoma</p>
+			<p>Type 2 includes renal cell carcinoma</p>
+			<p>Type 3 includes urothelial cell carcinoma and other</p>
+
+
+			
+		</form>
+
+		<br>
+
+		<!--submit button-->
+			<div style="text-align: center">
+				<input type="submit" value = "Submit" onclick="calc();"> 
+			</div>
+
+	</div>
+
+<!--display results -->
+
+	<div class = "form-submit" style="width: 360px; margin: 0 auto; padding-left: 0px">
+		<table style="padding-top:25px; table-layout: fixed; width: 300px", align = "center">
+			<thead style="background-color: #dddddd;">
+				<tr>
+					<th style="font-weight:bold; padding-top: 5px; padding-bottom: 5px"> Outcome </th>
+					<th style="font-weight:bold"> Probability </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td> Brain Metastasis</td>
+					<td> <span id = "display_outcome"></span> </td>
+				</tr>
+			</tbody>
+		</table>
+	<br>
+	</div>
+</div>
+</body>
+</html>
+
