@@ -47,7 +47,7 @@
 			} else if (age_val >= 90){
 				var PT =  0
 			} else {
-				var PT = 100.0 - .111*age_val
+				var PT = 100.0 - 1.11*age_val
 			}
 
 			// check male vs female
@@ -81,7 +81,7 @@
 
 			// update PT
 
-			PT = PT + (0.7*isFemale) + 4.9*(race === "4") + 5.3*(race === "3") + 1.1*(race === "2") + 26.2*(grade === "2") + 46.6*(grade === "3") + 44.7*(grade === "4") + 51.5*(grade === "5") + 18.7*(tstage === "2") + 16.9*(tstage === "3") + 17.2*(tstage === "4") + 23.0*(tstage === "0") + 13.4*(tstage === "5") + 21.0*(nstage === "2") + 24.3*(nstage === "3") + 20.3*(nstage === "5") + 21.2*(nstage === "4") + 39.0*(bonemet === "3") + 19.4*(bonemet === "1") + 14.9*(lungmet === "1") + 27.0*(lungmet === "3") + 18.6*(livmet === "1") + 40.9*(livmet === "3") + 32.4*(hist === "1") + 26.3*(hist === "3");
+			PT = PT + (0.7*isFemale) + 4.9*(race === "4") + 5.3*(race === "3") + 1.1*(race === "2") + 26.2*(grade === "2") + 46.6*(grade === "3") + 44.7*(grade === "4") + 51.5*(grade === "5") + 18.7*(tstage === "2") + 16.9*(tstage === "3") + 17.2*(tstage === "4") + 23.0*(tstage === "0") + 13.4*(tstage === "5") + 21.0*(nstage === "2") + 24.3*(nstage === "3") + 20.3*(nstage === "5") + 21.1*(nstage === "4") + 39.0*(bonemet === "3") + 19.4*(bonemet === "1") + 14.9*(lungmet === "1") + 27.0*(lungmet === "3") + 18.6*(livmet === "1") + 40.9*(livmet === "3") + 32.4*(hist === "1") + 26.3*(hist === "3");
 
 			// map points onto brain mets risk
 
