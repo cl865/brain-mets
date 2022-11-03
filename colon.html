@@ -75,15 +75,15 @@
 			// get liver mets
 			var livmet = document.querySelector('input[name="livmet"]:checked').value;
 
-			// get CEA
-			var cea = document.querySelector('input[name="cea"]:checked').value;
+			// get CEA value
+			var cea = parseFloat(document.getElementById("cea_input").value);
 
-			// get ulceration status
+			// get hist status
 			var his = document.querySelector('input[name="his"]:checked').value;
 
 			// update PT
 
-			PT = PT + (2.4*isMale) + 24.5*(race === "1") + 31.6*(race === "3") + 38.0*(race === "2") + 9.5*(grade === "2") + 44.4*(grade === "3") + 46.4*(grade === "4") + 54.4*(grade === "5") + 9.7*(tstage === "1") + 13.5*(tstage === "3") + 10.3*(tstage === "4") + 54.9*(tstage === "0") + 18.1* (tstage === "5") + 19.2*(nstage === "2") + 31.8*(nstage === "3") + 15.0*(nstage === "5") + 100.0*(bonemet === "3") + 72.7*(bonemet === "1") + 94.1*(lungmet === "1") + 56.0*(lungmet === "3") + 13.7*(livmet === "1") + 67.8*(livmet === "3") + 23.8*(cea === '1') + 17.6*(cea === "3") + 5.4*(his === "1");
+			PT = PT + (2.4*isMale) + 24.5*(race === "1") + 31.6*(race === "3") + 38.0*(race === "2") + 9.5*(grade === "2") + 44.4*(grade === "3") + 46.4*(grade === "4") + 54.4*(grade === "5") + 9.7*(tstage === "1") + 13.5*(tstage === "3") + 10.3*(tstage === "4") + 54.9*(tstage === "0") + 18.1* (tstage === "5") + 19.2*(nstage === "2") + 31.8*(nstage === "3") + 15.0*(nstage === "5") + 100.0*(bonemet === "3") + 72.7*(bonemet === "1") + 94.1*(lungmet === "1") + 56.0*(lungmet === "3") + 13.7*(livmet === "1") + 67.8*(livmet === "3") + 5.4*(his === "1") + 23.8*(cea >= 2.5) + 17.6*(isNaN(cea));
 
 			// map points onto brain mets risk
 
@@ -91,6 +91,7 @@
 
 			// format, display results bound between 0 and 1
 			document.getElementById('display_outcome').innerHTML = probInt(outcome) +'%'
+
 			}
 		}
 
@@ -277,19 +278,13 @@
 
 			</div>
 
-			<h4> CEA  </h4>
+			<h4> CEA <span style="font-size: 12px"> (ng/mL) </h4>
+
+			<p> Please leave blank if unknown.</p>
 
 			<div class = "radio-toolbar" style = "text-align: center; padding-top: 5px; padding-bottom:  15px">
 
-
-				<input type = "radio" id = "ceap" name = "cea" value = 1>
-				<label for = "ceap" style = "margin-left: 10px"> Positive </label>
-
-				<input type = "radio" id = "cean" name = "cea" value = 2 checked>
-				<label for = "cean"> Negative </label>
-
-				<input type = "radio" id = "ceao" name = "cea" value = 3>
-				<label for = "ceao"> Other/Unknown </label>
+				<input type="number" name = "cea" id = "cea_input" style="font-size: 14px" min = "0" value = "">
 
 			</div>
 
