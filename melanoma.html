@@ -1,4 +1,4 @@
-<!--brain mets risk after primary -->
+<!--brain mets risk after primary, August 2023 update -->
 
 <!-- start html doc -->
 <!DOCTYPE html>
@@ -43,11 +43,11 @@
 			var PT; 
 
 			if (age_val <= 0) {
-				var PT = 39.0
+				var PT = 36.3
 			} else if (age_val >= 90){
 				var PT =  0
 			} else {
-				var PT = 39.0 - .43*age_val
+				var PT = 36.3 - .4*age_val
 			}
 
 			// check male vs female
@@ -80,11 +80,11 @@
 
 			// update PT
 
-			PT = PT + (14.5*isMale) + 12.6*(race === "4") + 8.3*(race === "3") + 13.5*(race === "2") + 52.6*(grade === "2") + 55.5*(grade === "3") + 45.8*(grade === "4") + 42.1*(grade === "5") + 5.6*(tstage === "2") + 30.3*(tstage === "3") + 62.7*(tstage === "4") + 99.6*(tstage === "0") + 51.1* (tstage === "5") + 15.0*(nstage === "2") + 11.5*(nstage === "3") + 23.9*(nstage === "4") + 34.9*(nstage === "5") + 45.4*(bonemet === "3") + 21.0*(bonemet === "1") + 92.2*(lungmet === "1") + 100.0*(lungmet === "3") + 13.9*(livmet === "1") + 43.9*(livmet === "3") + 28.5*(ulc === "1") + 75*(ulc === "3");
+			PT = PT + (13.1*isMale) + 15.8*(race === "4") + 19.0*(race === "3") + 19.0*(race === "2") + 14.8*(grade === "2") + 30.8*(grade === "3") + 2.1*(grade === "4") + 5.4*(grade === "5") + 13.0*(tstage === "2") + 26.8*(tstage === "3") + 50.4*(tstage === "4") + 94.0*(tstage === "0") + 45.5*(tstage === "5") + 14.0*(nstage === "2") + 14.7*(nstage === "3") + 22.0*(nstage === "4") + 11.6*(nstage === "5") + 40.7*(bonemet === "3") + 22.1*(bonemet === "1") + 100.0*(lungmet === "1") + 98.9*(lungmet === "3") + 16.4*(livmet === "1") + 46.4*(livmet === "3") + 24.9*(ulc === "1") + 51.0*(ulc === "3");
 
 			// map points onto brain mets risk
 
-			var outcome = Math.round((-1.3794962+0.0056211*PT)*100);
+			var outcome = Math.round(Math.exp(0.031527*PT-8.58)/(Math.exp(0.031527*PT-8.58)+1)*100);
 
 			// format, display results bound between 0 and 1
 			document.getElementById('display_outcome').innerHTML = probInt(outcome) +'%'

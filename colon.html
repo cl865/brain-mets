@@ -43,11 +43,11 @@
 			var PT; 
 
 			if (age_val <= 0) {
-				var PT = 37.4
+				var PT = 28.5
 			} else if (age_val >= 90){
 				var PT =  0
 			} else {
-				var PT = 37.4 - .42*age_val
+				var PT = 28.5 - .032*age_val
 			}
 
 			// check male vs female
@@ -83,11 +83,11 @@
 
 			// update PT
 
-			PT = PT + (2.4*isMale) + 24.5*(race === "1") + 31.6*(race === "3") + 38.0*(race === "2") + 9.5*(grade === "2") + 44.4*(grade === "3") + 46.4*(grade === "4") + 54.4*(grade === "5") + 9.7*(tstage === "1") + 13.5*(tstage === "3") + 10.3*(tstage === "4") + 54.9*(tstage === "0") + 18.1* (tstage === "5") + 19.2*(nstage === "2") + 31.8*(nstage === "3") + 15.0*(nstage === "5") + 100.0*(bonemet === "3") + 72.7*(bonemet === "1") + 94.1*(lungmet === "1") + 56.0*(lungmet === "3") + 13.7*(livmet === "1") + 67.8*(livmet === "3") + 5.4*(his === "1") + 23.8*(cea >= 2.5) + 17.6*(isNaN(cea));
+			PT = PT + (0.7*isMale) + 1.3*(race === "4") + 3.7*(race === "3") + 13.6*(race === "2") + 7.4*(grade === "2") + 43.6*(grade === "3") + 43.8*(grade === "4") + 47.2*(grade === "5") + 9.9*(tstage === "1") + 11.5*(tstage === "3") + 10.3*(tstage === "4") + 61.7*(tstage === "0") + 17.1* (tstage === "5") + 17.9*(nstage === "2") + 30.2*(nstage === "3") + 9.0*(nstage === "5") + 85.8*(bonemet === "3") + 73.9*(bonemet === "1") + 100.0*(lungmet === "1") + 65.7*(lungmet === "3") + 15.1*(livmet === "1") + 73.2*(livmet === "3") + 0.8*(his === "1") + 26.6*(cea >= 2.5) + 15.5*(isNaN(cea));
 
 			// map points onto brain mets risk
 
-			var outcome = Math.round((-1.3880471+0.0047542*PT)*100);
+			var outcome = Math.round(Math.exp(0.022786*PT-8.490516)/(Math.exp(0.022786*PT-8.490516)+1)*100);
 
 			// format, display results bound between 0 and 1
 			document.getElementById('display_outcome').innerHTML = probInt(outcome) +'%'
